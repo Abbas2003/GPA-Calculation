@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
 import { useTheme } from 'next-themes';
 import { Moon, Sun } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import Link from 'next/link';
 
 export default function GPACalculator() {
   const [activeTab, setActiveTab] = useState('gpa');
@@ -68,6 +69,7 @@ export default function GPACalculator() {
             </Button>
           </div>
           <CardDescription>Calculate your GPA or CGPA with ease</CardDescription>
+          <CardDescription>Built by <Link href={"https://www.linkedin.com/in/mohammad-abbas-dev/"} target='_blank' className='hover:text-blue-800 transition duration-900'>M.Abbas</Link></CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
