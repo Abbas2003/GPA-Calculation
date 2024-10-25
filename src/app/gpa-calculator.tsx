@@ -1,23 +1,33 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
 import { useTheme } from 'next-themes';
-import { Moon, Sun } from 'lucide-react';
+import { Loader, Moon, Sun } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Trash } from "lucide-react";
 import Link from 'next/link';
+import "./globals.css";
+
+
 
 export default function GPACalculator() {
   const [activeTab, setActiveTab] = useState('gpa');
   const [courses, setCourses] = useState([{ name: '', grade: '', credits: '', gpa: '' }]);
   const [cgpaSemesters, setCgpaSemesters] = useState([{ gpa: '', credits: '' }]);
   const [result, setResult] = useState<number | null>(null);
+  const [visible, setVisible] = useState(true);
+  const [loading, setLoading] = useState(true);
   const { theme, setTheme } = useTheme();
 
-
+  // Optional: Hide loading screen after a timeout
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(false), 3000); // 3 seconds
+    return () => clearTimeout(timer);
+  }, []);
+  
 
   const addEntry = (setter: Function, template: any) => setter((prev: any) => [...prev, template]);
 
@@ -63,6 +73,24 @@ export default function GPACalculator() {
 
   const getGradePoints = (grade: string) =>
     ({ 'A': 4.0, 'A-': 3.66, 'B+': 3.33, 'B': 3.0, 'B-': 2.66, 'C+': 2.33, 'C': 2.0, 'C-': 1.66, 'D+': 1.33, 'D': 1.0, 'F': 0.0 }[grade] || 0);
+
+
+  useEffect(() => {
+    // Simulate a delay to represent data fetching (e.g., 2 seconds)
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer); // Cleanup timeout
+  }, []);
+
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <h1 className="blinking-text text-white text-5xl font-bold">M.Abbas</h1>
+      </div>
+    );
+  }
+
+
 
 
   return (
@@ -132,7 +160,7 @@ export default function GPACalculator() {
                       handleChange(setCourses, index, 'credits', e.target.value)
                     }
                   />
-                  <Button variant="ghost" size="icon" onClick={() => removeEntry(setCourses, index)}>
+                  <Button variant="ghost" size="icon" className='mx-auto' onClick={() => removeEntry(setCourses, index)}>
                     <Trash className="h-5 w-5" />
                     <span className="sr-only">Remove course</span>
                   </Button>
