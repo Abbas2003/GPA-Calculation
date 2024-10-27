@@ -78,7 +78,7 @@ body {
   
   @layer utilities {
     .animate-blink {
-      animation: blink 1s infinite;
+      animation: blink 1.5s infinite;
     }
   }
   

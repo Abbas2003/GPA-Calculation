@@ -10,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Trash } from "lucide-react";
 import Link from 'next/link';
 import "./globals.css";
+import Image from 'next/image';
 
 
 
@@ -22,11 +23,7 @@ export default function GPACalculator() {
   const [loading, setLoading] = useState(true);
   const { theme, setTheme } = useTheme();
 
-  // Optional: Hide loading screen after a timeout
-  useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), 3000); // 3 seconds
-    return () => clearTimeout(timer);
-  }, []);
+  
   
 
   const addEntry = (setter: Function, template: any) => setter((prev: any) => [...prev, template]);
@@ -77,15 +74,22 @@ export default function GPACalculator() {
 
   useEffect(() => {
     // Simulate a delay to represent data fetching (e.g., 2 seconds)
-    const timer = setTimeout(() => setLoading(false), 2000);
+    const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer); // Cleanup timeout
+  }, []);
+
+  // Optional: Hide loading screen after a timeout
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(false), 3000); // 3 seconds
+    return () => clearTimeout(timer);
   }, []);
 
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <h1 className="blinking-text text-white text-5xl font-bold">M.Abbas</h1>
+        <h1 className="blinking-text animate-blink text-white/80 text-5xl font-bold">GPA - Calculator</h1>
+        {/* <Image src="/loading.gif" alt="Loading..." width={100} height={100} className='animate-blink' /> */}
       </div>
     );
   }
@@ -160,14 +164,15 @@ export default function GPACalculator() {
                       handleChange(setCourses, index, 'credits', e.target.value)
                     }
                   />
-                  <Button variant="ghost" size="icon" className='mx-auto' onClick={() => removeEntry(setCourses, index)}>
+                  <Button variant="ghost" size="icon" className='mx-auto hover:text-red-700' onClick={() => removeEntry(setCourses, index)}>
                     <Trash className="h-5 w-5" />
-                    <span className="sr-only">Remove course</span>
+                    <span className="">Remove course</span>
                   </Button>
                 </div>
               ))}
 
               <Button
+                variant={"outline"}
                 onClick={() => addEntry(setCourses, { name: '', grade: '', credits: '' })}
                 className="mb-4 mr-3"
               >
@@ -175,6 +180,7 @@ export default function GPACalculator() {
               </Button>
 
               <Button
+                variant={"ghost"}
                 onClick={() => calculateResult(courses, getGradePoints)}
               >
                 Calculate GPA
